@@ -30,8 +30,11 @@
     {{ csrf_field() }}
 
 
-<input type="file"  name="images[]"  multiple>
- <input type="submit">
+<input type="file"  name="images[]" id="gallery-photo-add" multiple>
+<div class="gallery"></div>
+
+
+<input type="submit">
 
 </form>
 
@@ -56,7 +59,30 @@
 
 <script>
     $(document).ready(function(){
+        $(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
 
+        if (input.files) {
+            var filesAmount = input.files.length;
+
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#gallery-photo-add').on('change', function() {
+        imagesPreview(this, 'div.gallery');
+    });
+});
 
 
     })
